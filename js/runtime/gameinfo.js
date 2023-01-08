@@ -7,6 +7,27 @@ const atlas = new Image()
 atlas.src = 'images/Common.png'
 
 export default class GameInfo {
+  constructor() {
+    this.btnAreas = new Array();
+    /**
+     * 重新开始按钮区域
+     */
+    this.btnAreas[0] = {
+      startX: screenWidth / 2 - 40,
+      startY: screenHeight / 2 - 100 + 130,
+      endX: screenWidth / 2 + 50,
+      endY: screenHeight / 2 - 100 + 170
+    }
+    /**
+     * 分享分数按钮区域
+     */
+    this.btnAreas[1] = {
+      startX: screenWidth / 2 - 40,
+      startY: screenHeight / 2 + 80,
+      endX: screenWidth / 2 + 50,
+      endY: screenHeight / 2 + 120
+    }
+  }
   renderGameScore(ctx, remainingScore, level, elapsedTime) {
     let min = Math.trunc(elapsedTime / 60)
     let sec = elapsedTime % 60
@@ -88,16 +109,6 @@ export default class GameInfo {
       screenHeight / 2 - 100 + 207
     )
 
-    /**
-     * 重新开始按钮区域
-     * 方便简易判断按钮点击
-     */
-    this.btnArea = {
-      startX: screenWidth / 2 - 40,
-      startY: screenHeight / 2 - 100 + 130,
-      endX: screenWidth / 2 + 50,
-      endY: screenHeight / 2 - 100 + 170
-    }
     ctx.restore()
   }
 }

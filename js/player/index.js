@@ -7,8 +7,6 @@ const screenHeight = window.innerHeight
 
 // 玩家相关常量设置
 const PLAYER_IMG_SRC = 'images/evoChain/'
-const PLAYER_WIDTH = 80
-const PLAYER_HEIGHT = 80
 
 const databus = new DataBus()
 
@@ -16,12 +14,14 @@ export default class Player extends Sprite {
   constructor() {
     super(PLAYER_IMG_SRC + '1.png')
 
-    // 玩家默认处于屏幕底部居中位置
+    // 玩家默认处于屏幕居中位置
     this.x = screenWidth / 2 - this.width / 2
     this.y = screenHeight / 2 - this.height / 2
 
-    // 用于在手指移动的时候标识手指是否已经在飞机上了
+    // 用于在手指移动的时候标识手指是否已经触摸了
     this.touched = false
+
+    this.lastLevel = 0
 
     this.bullets = []
 
@@ -31,10 +31,10 @@ export default class Player extends Sprite {
 
   /**
    * 当手指触摸屏幕的时候
-   * 判断手指是否在飞机上
+   * 判断手指是否在角色上
    * @param {Number} x: 手指的X轴坐标
    * @param {Number} y: 手指的Y轴坐标
-   * @return {Boolean}: 用于标识手指是否在飞机上的布尔值
+   * @return {Boolean}: 用于标识手指是否在角色上的布尔值
    */
   checkIsFingerOnAir(x, y) {
     const deviation = 30
@@ -46,9 +46,9 @@ export default class Player extends Sprite {
   }
 
   /**
-   * 根据手指的位置设置飞机的位置
-   * 保证手指处于飞机中间
-   * 同时限定飞机的活动范围限制在屏幕中
+   * 根据手指的位置设置角色的位置
+   * 保证手指处于角色中间
+   * 同时限定角色的活动范围限制在屏幕中
    */
   setAirPosAcrossFingerPosZ(x, y) {
     let disX = x - this.width / 2
@@ -68,7 +68,7 @@ export default class Player extends Sprite {
 
   /**
    * 玩家响应手指的触摸事件
-   * 改变战机的位置
+   * 改变角色的位置
    */
   initEvent() {
     canvas.addEventListener('touchstart', ((e) => {
@@ -90,9 +90,13 @@ export default class Player extends Sprite {
       //   }
       if (!this.touched) this.degree = Math.atan2(this.y - y, this.x - x) * (180 / Math.PI) + 100
       databus.playerDegree = this.degree - 180
-      this.setImgSrc(PLAYER_IMG_SRC + databus.playLevel + '.png')
+      if(this.lastLevel != databus.playLevel){
+        console.log(PLAYER_IMG_SRC + databus.playLevel + '.png')
+        this.setImgSrc(PLAYER_IMG_SRC + databus.playLevel + '.png')
+      }
       this.x = screenWidth / 2 - this.width / 2
       this.y = screenHeight / 2 - this.height / 2
+      this.lastLevel = databus.playLevel
 
     }))
 
@@ -105,11 +109,15 @@ export default class Player extends Sprite {
       if (databus.gameOver || databus.startScreen || databus.pause || databus.victoryScreen) return
       if (!this.touched) this.degree = Math.atan2(this.y - y, this.x - x) * (180 / Math.PI) + 100
       databus.playerDegree = this.degree - 180
-      this.setImgSrc(PLAYER_IMG_SRC + databus.playLevel + '.png')
+      if(this.lastLevel != databus.playLevel){
+        console.log(PLAYER_IMG_SRC + databus.playLevel + '.png')
+        this.setImgSrc(PLAYER_IMG_SRC + databus.playLevel + '.png')
+      }
       this.x = screenWidth / 2 - this.width / 2
       this.y = screenHeight / 2 - this.height / 2
+      this.lastLevel = databus.playLevel
 
-      if (this.touched) this.setAirPosAcrossFingerPosZ(x, y)
+      // if (this.touched) this.setAirPosAcrossFingerPosZ(x, y)
     }))
 
     canvas.addEventListener('touchend', ((e) => {

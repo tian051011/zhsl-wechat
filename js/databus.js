@@ -22,14 +22,14 @@ export default class DataBus {
     this.score = 0
     this.playerDegree = 0
     this.playLevel = 1
-    this.playerSpeed = 2
+    this.playerSpeed = 6
     this.elapsedTime = 0
     this.bullets = []
     this.enemys = []
     this.animations = []
     this.gameOver = false
-    this.startScreen = true
-    this.victoryScreen = false
+    this.startScreen = false
+    this.victoryScreen = true
     this.pause = false //标识暂停状态
   }
 

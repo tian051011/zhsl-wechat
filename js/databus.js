@@ -28,8 +28,8 @@ export default class DataBus {
     this.enemys = []
     this.animations = []
     this.gameOver = false
-    this.startScreen = false
-    this.victoryScreen = true
+    this.startScreen = true
+    this.victoryScreen = false
     this.pause = false //标识暂停状态
   }
 
